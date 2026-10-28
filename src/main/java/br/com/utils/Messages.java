@@ -22,7 +22,24 @@ public final class Messages {
             "====== FECHAMENTO DO DIA =======\n" +
             "Total vendido: R$ %.2f%n";
 
-    public static final String ADD_ANOTHER_ITEM =
-            "Deseja adicionar outro lanche? (1 - Sim / 0 - Não): ";
+    public static final String ASK_ADD_ANOTHER =
+            "Adicionar outro lanche? (1 - Sim | 0 - Não): ";
 
+    public static final String ASK_CHEDDAR =
+            "Adicionar cheddar(+ R$ 4,00)? (1 - Sim | 0 - Não): ";
+
+    public static final String ASK_EXTRA_BACON =
+            "Adicionar bacon extra(+ R$ 4,00)? (1 - Sim | 0 - Não): ";
+
+    public static final String REMOVE_CHEESE =
+            "Retirar queijo? (1 - Sim | 0 - Não): ";
+
+    public static final String REMOVE_LETTUCE =
+            "Retirar alface? (1 - Sim | 0 - Não): ";
+
+    public static final String REMOVE_TOMATO =
+            "Retirar tomate? (1 - Sim | 0 - Não): ";
+
+    public static final String REMOVE_ONION =
+            "Retirar cebola? (1 - Sim | 0 - Não): ";
 }

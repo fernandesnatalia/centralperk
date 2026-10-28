@@ -1,6 +1,6 @@
 package br.com.order;
 
-import br.com.menu.Burger;
+import br.com.menu.MenuItem;
 import br.com.utils.Constants;
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ public class Order {
 
     private int number;
     private String customerName;
-    private ArrayList<Burger> items;
+    private ArrayList<MenuItem> items;
 
     public Order(int number, String customerName) {
         if (customerName == null || customerName.trim().isEmpty()) {
@@ -20,9 +20,9 @@ public class Order {
         this.items = new ArrayList<>();
     }
 
-    public void addItem(Burger burger) { items.add(burger); }
+    public void addItem(MenuItem item) { items.add(item); }
 
-    public ArrayList<Burger> getItems() { return new ArrayList<>(items); }
+    public ArrayList<MenuItem> getItems() { return new ArrayList<>(items); }
 
     public int getNumber() { return number; }
 
@@ -31,7 +31,7 @@ public class Order {
     public double calculateTotal() {
         double total = 0;
 
-        for (Burger item : items) {
+        for (MenuItem item : items) {
             total += item.getPrice();
         }
 

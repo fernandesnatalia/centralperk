@@ -1,6 +1,6 @@
 package br.com.app;
 
-import br.com.menu.Burger;
+import br.com.menu.MenuItem;
 import br.com.order.Order;
 import br.com.utils.Constants;
 import br.com.utils.Messages;
@@ -65,16 +65,23 @@ public class ConsoleMenu {
 
     public boolean askToAddAnotherItem() {
         while (true) {
-            System.out.print(Messages.ADD_ANOTHER_ITEM);
+            System.out.print(Messages.ASK_ADD_ANOTHER);
             String input = scanner.nextLine().trim();
 
-            if (input.equals("1")) {
-                return true;
-            }
+            if (input.equals("1")) { return true; }
+            if (input.equals("0")) { return false; }
 
-            if (input.equals("0")) {
-                return false;
-            }
+            System.out.println(Constants.INVALID_OPTION);
+        }
+    }
+
+    public boolean askYesOrNo(String message) {
+        while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine().trim();
+
+            if (input.equals("1")) { return true; }
+            if (input.equals("0")) { return false; }
 
             System.out.println(Constants.INVALID_OPTION);
         }
@@ -84,16 +91,16 @@ public class ConsoleMenu {
         System.out.print(Constants.DIVIDER + Constants.ORDER_REGISTERED);
 
         System.out.printf(
-                "Número: %d%nCliente: %s%n",
+                "\nNúmero: %d%nCliente: %s%n",
                 order.getNumber(),
                 order.getCustomerName()
         );
 
-        for (Burger burger : order.getItems()) {
+        for (MenuItem item : order.getItems()) {
             System.out.printf(
                     "%s - R$ %.2f%n",
-                    burger.getName(),
-                    burger.getPrice()
+                    item.getDescription(),
+                    item.getPrice()
             );
         }
 

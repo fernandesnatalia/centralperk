@@ -2,6 +2,7 @@ package br.com.app;
 
 import br.com.order.Order;
 import br.com.utils.Constants;
+import br.com.utils.Messages;
 
 public class Main {
 
@@ -25,7 +26,24 @@ public class Main {
 
                     while (isAddingItems) {
                         int burgerOption = menu.readBurgerOption();
-                        boolean isAdded = restaurant.addBurgerToOrder(order, burgerOption);
+
+                        boolean cheddar = menu.askYesOrNo(Messages.ASK_CHEDDAR);
+                        boolean extraBacon = menu.askYesOrNo(Messages.ASK_EXTRA_BACON);
+                        boolean removeCheese = menu.askYesOrNo(Messages.REMOVE_CHEESE);
+                        boolean removeLettuce = menu.askYesOrNo(Messages.REMOVE_LETTUCE);
+                        boolean removeTomato = menu.askYesOrNo(Messages.REMOVE_TOMATO);
+                        boolean removeOnion = menu.askYesOrNo(Messages.REMOVE_ONION);
+
+                        boolean isAdded = restaurant.addBurgerToOrder(
+                                order,
+                                burgerOption,
+                                removeCheese,
+                                removeLettuce,
+                                removeTomato,
+                                removeOnion,
+                                cheddar,
+                                extraBacon
+                        );
 
                         if (!isAdded) {
                             menu.displayMessage(Constants.INVALID_OPTION);
