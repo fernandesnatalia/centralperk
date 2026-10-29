@@ -44,6 +44,26 @@ public class Burger implements MenuItem {
         return description;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getRemovedIngredients() {
+        StringBuilder ingredients = new StringBuilder();
+
+        if (!cheese) ingredients.append("queijo, ");
+        if (!lettuce) ingredients.append("alface, ");
+        if (!tomato) ingredients.append("tomate, ");
+        if (!onion) ingredients.append("cebola, ");
+
+        if (ingredients.length() == 0) {
+            return "";
+        }
+
+        ingredients.setLength(ingredients.length() - 2);
+        return ingredients.toString();
+    }
+
     public double getPrice() { return price; }
 
     public boolean isCheese() { return cheese; }

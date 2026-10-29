@@ -8,6 +8,8 @@ public class WithExtraBacon implements MenuItem {
 
     public WithExtraBacon(MenuItem item) { this.item = item; }
 
+    public MenuItem getItem() { return item; }
+
     @Override
     public String getDescription() {
         return item.getDescription() + " + bacon extra";

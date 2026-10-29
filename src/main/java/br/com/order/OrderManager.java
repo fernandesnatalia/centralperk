@@ -1,7 +1,7 @@
 package br.com.order;
 
-import java.util.Collection;
-import java.util.HashMap;
+import br.com.menu.MenuItem;
+import java.util.*;
 
 public class OrderManager {
 
@@ -17,7 +17,23 @@ public class OrderManager {
 
     public Order findOrder(int number) { return orders.get(number); }
 
-    public Collection<Order> getOrders() { return orders.values(); }
+    public Collection<Order> getOrders() { return new ArrayList<>(orders.values()); }
+
+    public Set<String> getDistinctItemDescriptions() {
+        HashSet<String> combinations = new HashSet<>();
+
+        for (Order order : orders.values()) {
+            for (MenuItem item : order.getItems()) {
+                combinations.add(item.getDescription());
+            }
+        }
+
+        return combinations;
+    }
+
+    public boolean cancelOrder(int number) {
+        return orders.remove(number) != null;
+    }
 
     public double calculateDailyRevenue() {
         double total = 0;

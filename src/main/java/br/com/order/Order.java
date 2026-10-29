@@ -20,13 +20,29 @@ public class Order {
         this.items = new ArrayList<>();
     }
 
-    public void addItem(MenuItem item) { items.add(item); }
+    public void addItem(MenuItem item) {
+        if (item == null) {
+            throw new IllegalArgumentException(Constants.INVALID_OPTION);
+        }
 
+        items.add(item);
+    }
     public ArrayList<MenuItem> getItems() { return new ArrayList<>(items); }
 
     public int getNumber() { return number; }
 
     public String getCustomerName() { return customerName; }
+
+    public boolean removeItem(int index) {
+        if (index < 0 || index >= items.size()) {
+            return false;
+        }
+
+        items.remove(index);
+        return true;
+    }
+
+    public void cancel() { items.clear(); }
 
     public double calculateTotal() {
         double total = 0;

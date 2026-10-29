@@ -8,6 +8,7 @@ import br.com.menu.decorator.WithExtraBacon;
 import br.com.order.Order;
 import br.com.order.OrderManager;
 import java.util.Collection;
+import java.util.Set;
 
 public class RestaurantFacade {
 
@@ -53,12 +54,31 @@ public class RestaurantFacade {
         return true;
     }
 
-    public Order createOrder(String customerName) { return orderManager.createOrder(customerName); }
+    public Order createOrder(String customerName) {
+        return orderManager.createOrder(customerName);
+    }
 
-    public Collection<Order> getOrders() { return orderManager.getOrders(); }
+    public Collection<Order> getOrders() {
+        return orderManager.getOrders();
+    }
 
-    public Order findOrder(int number) { return orderManager.findOrder(number); }
+    public Order findOrder(int number) {
+        return orderManager.findOrder(number);
+    }
 
-    public double calculateDailyRevenue() { return orderManager.calculateDailyRevenue(); }
+    public Set<String> getDistinctItemDescriptions() {
+        return orderManager.getDistinctItemDescriptions();
+    }
 
+    public boolean removeItemFromOrder(Order order, int index) {
+        return order.removeItem(index);
+    }
+
+    public boolean cancelOrder(int number) {
+        return orderManager.cancelOrder(number);
+    }
+
+    public double calculateDailyRevenue() {
+        return orderManager.calculateDailyRevenue();
+    }
 }
