@@ -4,9 +4,17 @@ public final class Messages {
 
     // Restaurant menus and display messages
     public static final String FOOD_MENU =
-            "1 - X-Burger (R$ 16,00)\n" +
-            "2 - X-Salada (R$ 18,00)\n" +
-            "3 - X-Bacon (R$ 22,00)\n" +
+            "\n\n================= COMIDAS =================\n" +
+            "1 - Trifle da Rachel (R$ 22,00)\n" +
+            "2 - Sanduíche MoistMaker do Ross (R$ 28,00)\n" +
+            "3 - Doces da Monica (R$ 12,00)\n" +
+            "4 - Cheesecake do Chão (R$ 18,00)\n" +
+            "5 - Pizza do Joey (R$ 32,00)\n" +
+            "6 - Biscoitos da Avó da Phoebe (R$ 10,00)\n" +
+            "\n================ BEBIDAS =================\n" +
+            "7 - Café Comum (R$6,00)\n" +
+            "8 - Café Gigante do Central Perk (R$ 14,00)\n" +
+            "9 - Margaritas do Ross (R$ 18,00)\n" +
             "0 - Voltar ao menu\n";
 
     public static final String MAIN_MENU =
@@ -18,7 +26,7 @@ public final class Messages {
             "0 - Sair\n";
 
     public static final String MODIFICATION_MENU =
-            "======= MODIFICAR PEDIDO =======\n" +
+            "============== MODIFICAR PEDIDO ==============\n" +
             "1 - Acrescentar item\n" +
             "2 - Remover item\n" +
             "3 - Cancelar pedido\n" +
@@ -30,6 +38,7 @@ public final class Messages {
     public static final String ENTER_ORDER_NUMBER = "Digite o número do pedido: ";
     public static final String ENTER_ITEM_NUMBER = "Digite o número do item que deseja remover: ";
     public static final String ENTER_TIP = "Informe o valor da gorjeta (R$): ";
+    public static final String RETURN_MENU = "0 - Voltar ao menu";
 
     // Daily report
     public static final String TOTAL_SALES = "Total de vendas: R$ %.2f%n";
@@ -38,17 +47,14 @@ public final class Messages {
     public static final String SUBTOTAL = "Subtotal: R$ %.2f%n";
     public static final String TOTAL = "Total: R$ %.2f%n";
     public static final String DIFFERENT_COMBINATIONS = "Combinações diferentes: %d%n";
-    public static final String DIFFERENT_BASE_BURGERS = "Lanches base diferentes: %d%n";
+    public static final String DIFFERENT_BASE_ITEMS = "Produtos diferentes: %d%n";
 
     // Customization prompts
     public static final String ASK_CUSTOMIZATION = "Deseja adicionar extras ou retirar ingredientes? (1 - Sim | 0 - Não): ";
-    public static final String ASK_ADD_ANOTHER = "Adicionar outro lanche? (1 - Sim | 0 - Não): ";
-    public static final String ASK_CHEDDAR = "Adicionar cheddar (+ R$ 4,00)? (1 - Sim | 0 - Não): ";
-    public static final String ASK_EXTRA_BACON = "Adicionar bacon extra (+ R$ 6,00)? (1 - Sim | 0 - Não): ";
-    public static final String REMOVE_CHEESE = "Retirar queijo? (1 - Sim | 0 - Não): ";
-    public static final String REMOVE_LETTUCE = "Retirar alface? (1 - Sim | 0 - Não): ";
-    public static final String REMOVE_TOMATO = "Retirar tomate? (1 - Sim | 0 - Não): ";
-    public static final String REMOVE_ONION = "Retirar cebola? (1 - Sim | 0 - Não): ";
+    public static final String ASK_ADD_ANOTHER = "Adicionar outro item? (1 - Sim | 0 - Não): ";
+    public static final String ASK_LARGE_SIZE = "Deseja tamanho extra? (1 - Sim | 0 - Não): ";
+    public static final String SELECT_EXTRA = "Escolha um adicional: ";
+    public static final String EXTRA_ALREADY_SELECTED = "Esse adicional já foi selecionado.";
 
     private Messages() {
     }

@@ -3,6 +3,7 @@ package br.com.app;
 import br.com.order.Order;
 import br.com.utils.Constants;
 import br.com.utils.Messages;
+import java.util.List;
 
 public class Main {
 
@@ -131,37 +132,31 @@ public class Main {
         boolean addedAnyItem = false;
 
         do {
-            int burgerOption = menu.readBurgerOption();
+            int option = menu.readMenuOption();
 
-            if (burgerOption == 0) {
+            if (option == 0) {
                 break;
             }
 
-            boolean cheddar = false;
-            boolean extraBacon = false;
-            boolean removeCheese = false;
-            boolean removeLettuce = false;
-            boolean removeTomato = false;
-            boolean removeOnion = false;
+            List<String> selectedExtras = new java.util.ArrayList<>();
 
             if (menu.askForCustomization()) {
-                cheddar = menu.askYesOrNo(Messages.ASK_CHEDDAR);
-                extraBacon = menu.askYesOrNo(Messages.ASK_EXTRA_BACON);
-                removeCheese = menu.askYesOrNo(Messages.REMOVE_CHEESE);
-                removeLettuce = menu.askYesOrNo(Messages.REMOVE_LETTUCE);
-                removeTomato = menu.askYesOrNo(Messages.REMOVE_TOMATO);
-                removeOnion = menu.askYesOrNo(Messages.REMOVE_ONION);
+                selectedExtras = menu.readExtras(
+                        restaurant.getAvailableExtras(option)
+                );
             }
 
-            boolean isAdded = restaurant.addBurgerToOrder(
+            boolean largeSize = false;
+
+            if (option == 5) {
+                largeSize = menu.askYesOrNo(Messages.ASK_LARGE_SIZE);
+            }
+
+            boolean isAdded = restaurant.addMenuItemToOrder(
                     order,
-                    burgerOption,
-                    removeCheese,
-                    removeLettuce,
-                    removeTomato,
-                    removeOnion,
-                    cheddar,
-                    extraBacon
+                    option,
+                    selectedExtras,
+                    largeSize
             );
 
             if (!isAdded) {

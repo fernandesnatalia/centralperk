@@ -1,12 +1,14 @@
 package br.com.app;
 
-import br.com.menu.BurgerFactory;
+import br.com.menu.MenuFactory;
 import br.com.menu.MenuItem;
 import br.com.order.Order;
 import br.com.order.OrderManager;
 import br.com.financial.CashRegister;
 import br.com.utils.Constants;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class RestaurantFacade {
@@ -14,32 +16,28 @@ public class RestaurantFacade {
     private final OrderManager orderManager = new OrderManager();
     private final CashRegister cashRegister = new CashRegister();
 
-    public boolean addBurgerToOrder(
+    public Map<String, Double> getAvailableExtras(int option) {
+        return MenuFactory.getAvailableExtras(option);
+    }
+
+    public boolean addMenuItemToOrder(
             Order order,
             int option,
-            boolean removeCheese,
-            boolean removeLettuce,
-            boolean removeTomato,
-            boolean removeOnion,
-            boolean cheddar,
-            boolean extraBacon
+            List<String> selectedExtras,
+            boolean largeSize
     ) {
         if (order == null) {
             throw new IllegalArgumentException(Constants.INVALID_NULL_VALUE);
         }
 
-        if (option < 1 || option > 3) {
+        if (option < 1 || option > 9) {
             return false;
         }
 
-        MenuItem item = BurgerFactory.createCustomizedBurger(
+        MenuItem item = MenuFactory.createCustomizedItem(
                 option,
-                removeCheese,
-                removeLettuce,
-                removeTomato,
-                removeOnion,
-                cheddar,
-                extraBacon
+                selectedExtras,
+                largeSize
         );
 
         order.addItem(item);

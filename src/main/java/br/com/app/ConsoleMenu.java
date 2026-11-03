@@ -1,13 +1,15 @@
 package br.com.app;
 
-import br.com.menu.Burger;
 import br.com.menu.MenuItem;
-import br.com.menu.decorator.WithCheddar;
-import br.com.menu.decorator.WithExtraBacon;
+import br.com.menu.decorator.WithExtraIngredient;
+import br.com.menu.decorator.WithLargeSize;
 import br.com.order.Order;
 import br.com.utils.Constants;
 import br.com.utils.Messages;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ConsoleMenu {
@@ -44,11 +46,13 @@ public class ConsoleMenu {
         }
     }
 
-    public int readBurgerOption() {
-        while (true) {
-            int option = readInteger(Constants.DIVIDER + Constants.FOOD_MENU + Messages.FOOD_MENU + Messages.SELECT_OPTION);
+    public int readMenuOption() {
+        System.out.print(Constants.DIVIDER + Constants.FOOD_MENU + Messages.FOOD_MENU);
 
-            if (option >= 0 && option <= 3) {
+        while (true) {
+            int option = readInteger(Messages.SELECT_OPTION);
+
+            if (option >= 0 && option <= 9) {
                 return option;
             }
 
@@ -121,57 +125,43 @@ public class ConsoleMenu {
         }
     }
 
-    private Burger getBaseBurger(MenuItem item) {
+    public List<String> readExtras(Map<String, Double> availableExtras) {
+        List<String> selectedExtras = new ArrayList<>();
+        List<String> extras = new ArrayList<>(availableExtras.keySet());
+
         while (true) {
-            if (item instanceof WithCheddar) {
-                item = ((WithCheddar) item).getItem();
-            } else if (item instanceof WithExtraBacon) {
-                item = ((WithExtraBacon) item).getItem();
-            } else if (item instanceof Burger) {
-                return (Burger) item;
-            } else {
-                return null;
+            for (int i = 0; i < extras.size(); i++) {
+                String extra = extras.get(i);
+
+                System.out.printf(
+                    "%d - %s (+ R$ %.2f)%n",
+                    i + 1,
+                    extra,
+                    availableExtras.get(extra)
+                );
             }
-        }
-    }
 
-    private void displayOrderItem(MenuItem item) {
-        Burger burger = getBaseBurger(item);
+            System.out.println(Messages.RETURN_MENU);
 
-        if (burger == null) {
-            System.out.printf(
-                    "%s - R$ %.2f%n",
-                    item.getDescription(),
-                    item.getPrice()
-            );
-            return;
-        }
+            int option = readInteger(Messages.SELECT_EXTRA);
 
-        System.out.printf(
-                "%s - R$ %.2f%n",
-                burger.getName(),
-                burger.getPrice()
-        );
+            if (option == 0) {
+                return selectedExtras;
+            }
 
-        displayAdditions(item);
+            if (option < 1 || option > extras.size()) {
+                System.out.println(Constants.INVALID_OPTION);
+                continue;
+            }
 
-        String removedIngredients = burger.getRemovedIngredients();
+            String selected = extras.get(option - 1);
 
-        if (!removedIngredients.isEmpty()) {
-            System.out.printf("    - %s%n", removedIngredients);
-        }
-    }
+            if (selectedExtras.contains(selected)) {
+                System.out.println(Messages.EXTRA_ALREADY_SELECTED);
+                continue;
+            }
 
-    private void displayAdditions(MenuItem item) {
-        if (item instanceof WithCheddar) {
-            WithCheddar cheddar = (WithCheddar) item;
-            displayAdditions(cheddar.getItem());
-            System.out.printf("    + cheddar - R$ %.2f%n", 4.00);
-
-        } else if (item instanceof WithExtraBacon) {
-            WithExtraBacon bacon = (WithExtraBacon) item;
-            displayAdditions(bacon.getItem());
-            System.out.printf("    + bacon extra - R$ %.2f%n", 6.00);
+            selectedExtras.add(selected);
         }
     }
 
@@ -189,10 +179,10 @@ public class ConsoleMenu {
             MenuItem item = items.get(i);
 
             System.out.printf(
-                    "%d. %s - R$ %.2f%n",
-                    i + 1,
-                    item.getDescription(),
-                    item.getPrice()
+                "%d. %s - R$ %.2f%n",
+                i + 1,
+                item.getDescription(),
+                item.getPrice()
             );
         }
     }
@@ -224,9 +214,9 @@ public class ConsoleMenu {
 
     private void displayOrderDetails(Order order, Double tipAmount) {
         System.out.printf(
-                "%nNúmero: %d%nCliente: %s%n",
-                order.getNumber(),
-                order.getCustomerName()
+            "%nNúmero: %d%nCliente: %s%n",
+            order.getNumber(),
+            order.getCustomerName()
         );
 
         if (order.isCanceled()) {
@@ -249,6 +239,44 @@ public class ConsoleMenu {
                 Messages.SUBTOTAL + Messages.TOTAL_TIPS + Messages.TOTAL,
                 subtotal, tipAmount, subtotal + tipAmount
         );
+    }
+
+    private void displayOrderItem(MenuItem item) {
+        MenuItem baseItem = item;
+        List<MenuItem> additions = new ArrayList<>();
+
+        while (baseItem instanceof WithExtraIngredient || baseItem instanceof WithLargeSize) {
+
+            additions.add(0, baseItem);
+
+            if (baseItem instanceof WithExtraIngredient extra) {
+                baseItem = extra.getItem();
+            } else {
+                WithLargeSize large = (WithLargeSize) baseItem;
+                baseItem = large.getItem();
+            }
+        }
+
+        System.out.printf(
+                "%s - R$ %.2f%n",
+                baseItem.getDescription(),
+                baseItem.getPrice()
+        );
+
+        for (MenuItem addition : additions) {
+            if (addition instanceof WithExtraIngredient extra) {
+                System.out.printf(
+                        "    + %s (+ R$ %.2f)%n",
+                        extra.getExtraName(),
+                        extra.getExtraPrice()
+                );
+            } else if (addition instanceof WithLargeSize large) {
+                System.out.printf(
+                        "    + Tamanho grande (+ R$ %.2f)%n",
+                        large.getAdditionalPrice()
+                );
+            }
+        }
     }
 
     public void displayDailyClosing(
@@ -281,7 +309,7 @@ public class ConsoleMenu {
         }
 
         System.out.printf(
-                Messages.DIFFERENT_BASE_BURGERS,
+                Messages.DIFFERENT_BASE_ITEMS,
                 baseNames.size()
         );
 
