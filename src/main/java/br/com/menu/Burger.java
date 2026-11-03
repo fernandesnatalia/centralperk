@@ -44,6 +44,11 @@ public class Burger implements MenuItem {
         return description;
     }
 
+    @Override
+    public String getBaseName() {
+        return name;
+    }
+
     public String getName() {
         return name;
     }
@@ -56,7 +61,7 @@ public class Burger implements MenuItem {
         if (!tomato) ingredients.append("tomate, ");
         if (!onion) ingredients.append("cebola, ");
 
-        if (ingredients.length() == 0) {
+        if (ingredients.isEmpty()) {
             return "";
         }
 
@@ -66,19 +71,11 @@ public class Burger implements MenuItem {
 
     public double getPrice() { return price; }
 
-    public boolean isCheese() { return cheese; }
-
     public void setCheese(boolean cheese) { this.cheese = cheese; }
-
-    public boolean isLettuce() { return lettuce; }
 
     public void setLettuce(boolean lettuce) { this.lettuce = lettuce; }
 
-    public boolean isTomato() { return tomato; }
-
     public void setTomato(boolean tomato) { this.tomato = tomato; }
-
-    public boolean isOnion() { return onion; }
 
     public void setOnion(boolean onion) { this.onion = onion; }
 }

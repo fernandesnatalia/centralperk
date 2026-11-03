@@ -1,23 +1,42 @@
 package br.com.order;
 
 import br.com.menu.MenuItem;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 public class OrderManager {
 
-    private final HashMap<Integer, Order> orders = new HashMap<>();
+    private final Map<Integer, Order> orders = new HashMap<>();
+    private final List<Order> orderHistory = new ArrayList<>();
+
     private int orderCounter = 1;
 
     public Order createOrder(String customerName) {
         Order order = new Order(orderCounter, customerName);
         orders.put(orderCounter, order);
+        orderHistory.add(order);
         orderCounter++;
         return order;
     }
 
-    public Order findOrder(int number) { return orders.get(number); }
+    public Order findOrder(int number) {
+        for (Order order : orderHistory) {
+            if (order.getNumber() == number) {
+                return order;
+            }
+        }
 
-    public Collection<Order> getOrders() { return new ArrayList<>(orders.values()); }
+        return null;
+    }
+
+    public Collection<Order> getOrders() {
+        return new ArrayList<>(orderHistory);
+    }
 
     public Set<String> getDistinctItemDescriptions() {
         HashSet<String> combinations = new HashSet<>();
@@ -32,16 +51,25 @@ public class OrderManager {
     }
 
     public boolean cancelOrder(int number) {
-        return orders.remove(number) != null;
-    }
+        Order order = orders.remove(number);
 
-    public double calculateDailyRevenue() {
-        double total = 0;
-
-        for (Order order : orders.values()) {
-            total += order.calculateTotal();
+        if (order == null) {
+            return false;
         }
 
-        return total;
+        order.cancel();
+        return true;
+    }
+
+    public Set<String> getDistinctBaseNames() {
+        Set<String> baseNames = new HashSet<>();
+
+        for (Order order : orders.values()) {
+            for (MenuItem item : order.getItems()) {
+                baseNames.add(item.getBaseName());
+            }
+        }
+
+        return baseNames;
     }
 }

@@ -1,18 +1,18 @@
 package br.com.app;
 
-import br.com.menu.Burger;
 import br.com.menu.BurgerFactory;
 import br.com.menu.MenuItem;
-import br.com.menu.decorator.WithCheddar;
-import br.com.menu.decorator.WithExtraBacon;
 import br.com.order.Order;
 import br.com.order.OrderManager;
+import br.com.financial.CashRegister;
+import br.com.utils.Constants;
 import java.util.Collection;
 import java.util.Set;
 
 public class RestaurantFacade {
 
     private final OrderManager orderManager = new OrderManager();
+    private final CashRegister cashRegister = new CashRegister();
 
     public boolean addBurgerToOrder(
             Order order,
@@ -24,31 +24,23 @@ public class RestaurantFacade {
             boolean cheddar,
             boolean extraBacon
     ) {
-        Burger burger;
-
-        switch (option) {
-            case 1:
-                burger = BurgerFactory.xBurger();
-                break;
-            case 2:
-                burger = BurgerFactory.xSalad();
-                break;
-            case 3:
-                burger = BurgerFactory.xBacon();
-                break;
-            default:
-                return false;
+        if (order == null) {
+            throw new IllegalArgumentException(Constants.INVALID_NULL_VALUE);
         }
 
-        if (removeCheese) burger.setCheese(false);
-        if (removeLettuce) burger.setLettuce(false);
-        if (removeTomato) burger.setTomato(false);
-        if (removeOnion) burger.setOnion(false);
+        if (option < 1 || option > 3) {
+            return false;
+        }
 
-        MenuItem item = burger;
-
-        if (cheddar) { item = new WithCheddar(item); }
-        if (extraBacon) { item = new WithExtraBacon(item); }
+        MenuItem item = BurgerFactory.createCustomizedBurger(
+                option,
+                removeCheese,
+                removeLettuce,
+                removeTomato,
+                removeOnion,
+                cheddar,
+                extraBacon
+        );
 
         order.addItem(item);
         return true;
@@ -71,14 +63,74 @@ public class RestaurantFacade {
     }
 
     public boolean removeItemFromOrder(Order order, int index) {
-        return order.removeItem(index);
+        if (order == null || order.isCanceled()) {
+            return false;
+        }
+
+        if (orderManager.findOrder(order.getNumber()) != order) {
+            return false;
+        }
+
+        boolean removed = order.removeItem(index);
+
+        if (!removed) {
+            return false;
+        }
+
+        if (order.getItems().isEmpty()) {
+            cancelOrder(order.getNumber());
+        }
+
+        return true;
     }
 
     public boolean cancelOrder(int number) {
-        return orderManager.cancelOrder(number);
+        boolean canceled = orderManager.cancelOrder(number);
+
+        if (canceled) {
+            cashRegister.removeTransaction(number);
+        }
+
+        return canceled;
     }
 
-    public double calculateDailyRevenue() {
-        return orderManager.calculateDailyRevenue();
+    public Set<String> getDistinctBaseNames() {
+        return orderManager.getDistinctBaseNames();
+    }
+    public void registerTransaction(Order order, double tipAmount) {
+        cashRegister.registerTransaction(order, tipAmount);
+    }
+
+    public double getTipAmount(int orderNumber) {
+        return cashRegister.getTipAmount(orderNumber);
+    }
+
+    public void updateTransaction(Order order) {
+        if (order == null) {
+            throw new IllegalArgumentException(Constants.INVALID_NULL_VALUE);
+        }
+
+        if (order.isCanceled()) {
+            return;
+        }
+
+        if (order.getItems().isEmpty() || order.calculateTotal() <= 0) {
+            cancelOrder(order.getNumber());
+            return;
+        }
+
+        cashRegister.updateTransaction(order);
+    }
+
+    public double calculateTotalSales() {
+        return cashRegister.calculateTotalSales();
+    }
+
+    public double calculateTotalTips() {
+        return cashRegister.calculateTotalTips();
+    }
+
+    public double calculateTotalCash() {
+        return cashRegister.calculateTotalCash();
     }
 }

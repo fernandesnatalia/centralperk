@@ -15,33 +15,86 @@ public class ConsoleMenu {
     private final Scanner scanner = new Scanner(System.in);
 
     public void displayMenu() {
-        System.out.print(
-                Constants.DIVIDER +
-                Messages.MAIN_MENU +
-                Constants.SELECT_OPTION
-        );
+        System.out.print(Constants.DIVIDER + Constants.MAIN_MENU + Messages.MAIN_MENU);
     }
 
     public int readOption() {
         while (true) {
-            String input = scanner.nextLine().trim();
+            int option = readInteger(Messages.SELECT_OPTION);
 
-            if (input.isEmpty()) {
-                System.out.println(Constants.INVALID_OPTION);
-                continue;
+            if (option >= 0 && option <= 5) {
+                return option;
             }
+
+            System.out.println(Constants.INVALID_OPTION);
+        }
+    }
+
+    private int readInteger(String message) {
+        while (true) {
+            System.out.print(message);
+
+            String input = scanner.nextLine().trim();
 
             try {
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println(Constants.INVALID_OPTION + Constants.SELECT_OPTION);
+                System.out.println(Constants.INVALID_OPTION);
             }
+        }
+    }
+
+    public int readBurgerOption() {
+        while (true) {
+            int option = readInteger(Constants.DIVIDER + Constants.FOOD_MENU + Messages.FOOD_MENU + Messages.SELECT_OPTION);
+
+            if (option >= 0 && option <= 3) {
+                return option;
+            }
+
+            System.out.println(Constants.INVALID_OPTION);
+        }
+    }
+
+    public int readItemIndex(Order order) {
+        while (true) {
+            int index = readInteger(Messages.ENTER_ITEM_NUMBER);
+
+            if (index >= 1 && index <= order.getItems().size()) {
+                return index - 1;
+            }
+
+            System.out.println(Constants.INVALID_OPTION);
+        }
+    }
+
+    public int readOrderNumber() {
+        while (true) {
+            int number = readInteger(Messages.ENTER_ORDER_NUMBER);
+
+            if (number > 0) {
+                return number;
+            }
+
+            System.out.println(Constants.INVALID_OPTION);
+        }
+    }
+
+    public int readModificationOption() {
+        while (true) {
+            int option = readInteger(Constants.DIVIDER + Messages.MODIFICATION_MENU + Messages.SELECT_OPTION);
+
+            if (option >= 0 && option <= 3) {
+                return option;
+            }
+
+            System.out.println(Constants.INVALID_OPTION);
         }
     }
 
     public String readCustomerName() {
         while (true) {
-            System.out.print(Constants.ENTER_CUSTOMER_NAME);
+            System.out.print(Messages.ENTER_CUSTOMER_NAME);
             String customerName = scanner.nextLine();
 
             if (customerName != null && !customerName.trim().isEmpty()) {
@@ -52,37 +105,8 @@ public class ConsoleMenu {
         }
     }
 
-    public int readBurgerOption() {
-        while (true) {
-            System.out.print(Constants.DIVIDER + Messages.FOOD_MENU + Constants.SELECT_OPTION);
-            String input = scanner.nextLine().trim();
-
-            try {
-                int option = Integer.parseInt(input);
-                if (option >= 1 && option <= 3) {
-                    return option;
-                }
-                System.out.println(Constants.INVALID_OPTION);
-            } catch (NumberFormatException e) {
-                System.out.println(Constants.INVALID_OPTION);
-            }
-        }
-    }
-
     public boolean askForCustomization() {
         return askYesOrNo(Messages.ASK_CUSTOMIZATION);
-    }
-
-    public boolean askToAddAnotherItem() {
-        while (true) {
-            System.out.print(Messages.ASK_ADD_ANOTHER);
-            String input = scanner.nextLine().trim();
-
-            if (input.equals("1")) { return true; }
-            if (input.equals("0")) { return false; }
-
-            System.out.println(Constants.INVALID_OPTION);
-        }
     }
 
     public boolean askYesOrNo(String message) {
@@ -151,25 +175,6 @@ public class ConsoleMenu {
         }
     }
 
-    public int readItemIndex(Order order) {
-        while (true) {
-            System.out.print(Messages.ENTER_ITEM_NUMBER);
-            String input = scanner.nextLine().trim();
-
-            try {
-                int index = Integer.parseInt(input);
-
-                if (index >= 1 && index <= order.getItems().size()) {
-                    return index - 1;
-                }
-
-                System.out.println(Constants.INVALID_OPTION);
-            } catch (NumberFormatException e) {
-                System.out.println(Constants.INVALID_OPTION);
-            }
-        }
-    }
-
     public void displayOrderItems(Order order) {
         var items = order.getItems();
 
@@ -192,9 +197,9 @@ public class ConsoleMenu {
         }
     }
 
-    public void displayOrder(Order order) {
+    public void displayOrder(Order order, double tipAmount) {
         System.out.print(Constants.DIVIDER + Constants.ORDER_REGISTERED);
-        displayOrderDetails(order);
+        displayOrderDetails(order, tipAmount);
     }
 
     public void displayOrders(Collection<Order> orders) {
@@ -206,50 +211,60 @@ public class ConsoleMenu {
             return;
         }
 
+        int i = 0;
+
         for (Order order : orders) {
-            displayOrderDetails(order);
-            System.out.println("————————————");
+            if (i > 0) {
+                System.out.println("----------");
+            }
+            displayOrderDetails(order, null);
+            i++;
         }
     }
 
-    private void displayOrderDetails(Order order) {
+    private void displayOrderDetails(Order order, Double tipAmount) {
         System.out.printf(
                 "%nNúmero: %d%nCliente: %s%n",
                 order.getNumber(),
                 order.getCustomerName()
         );
 
+        if (order.isCanceled()) {
+            System.out.println(Constants.CANCELED_STATUS);
+            return;
+        }
+
         for (MenuItem item : order.getItems()) {
             displayOrderItem(item);
         }
 
-        System.out.printf("Total: R$ %.2f%n", order.calculateTotal());
-    }
+        double subtotal = order.calculateTotal();
 
-    public int readOrderNumber() {
-        while (true) {
-            System.out.print(Constants.ENTER_ORDER_NUMBER);
-            String input = scanner.nextLine().trim();
-
-            try {
-                int number = Integer.parseInt(input);
-
-                if (number > 0) {
-                    return number;
-                }
-
-                System.out.println(Constants.INVALID_OPTION);
-            } catch (NumberFormatException e) {
-                System.out.println(Constants.INVALID_OPTION);
-            }
+        if (tipAmount == null) {
+            System.out.printf("Total: R$ %.2f%n", subtotal);
+            return;
         }
+
+        System.out.printf(
+                Messages.SUBTOTAL + Messages.TOTAL_TIPS + Messages.TOTAL,
+                subtotal, tipAmount, subtotal + tipAmount
+        );
     }
 
     public void displayDailyClosing(
-            double revenue,
-            Collection<String> combinations
+            double sales,
+            double tips,
+            double totalCash,
+            Collection<String> combinations,
+            Collection<String> baseNames
     ) {
-        System.out.printf(Constants.DIVIDER + Messages.DAILY_CLOSING, revenue);
+        System.out.println(Constants.DIVIDER + Constants.DAILY_CLOSING);
+
+        System.out.printf(
+                Messages.TOTAL_SALES + Messages.TOTAL_TIPS + Messages.TOTAL_CASH,
+                sales, tips, totalCash
+        );
+
         System.out.printf(
                 Messages.DIFFERENT_COMBINATIONS,
                 combinations.size()
@@ -265,34 +280,47 @@ public class ConsoleMenu {
             );
         }
 
+        System.out.printf(
+                Messages.DIFFERENT_BASE_BURGERS,
+                baseNames.size()
+        );
+
+        itemNumber = 1;
+
+        for (String baseName : baseNames) {
+            System.out.printf(
+                    "%d. %s%n",
+                    itemNumber++,
+                    baseName
+            );
+        }
+
         System.out.println(Constants.DIVIDER);
     }
+
 
     public void displayMessage(String message) {
         System.out.println(message);
     }
 
-    public int readModificationOption() {
+    public double readTipAmount() {
         while (true) {
-            System.out.println(
-                    Constants.DIVIDER +
-                    Messages.MODIFICATION_MENU +
-                    Constants.SELECT_OPTION
-            );
+            System.out.print(Messages.ENTER_TIP);
 
-            String input = scanner.nextLine().trim();
+            String input = scanner.nextLine().trim().replace(",", ".");
 
             try {
-                int option = Integer.parseInt(input);
+                double tip = Double.parseDouble(input);
 
-                if (option >= 0 && option <= 3) {
-                    return option;
+                if (Double.isFinite(tip) && tip >= 0) {
+                    return tip;
                 }
-            } catch (NumberFormatException e) {
-                // TODO
-            }
 
-            System.out.println(Constants.INVALID_OPTION);
+                System.out.println(Constants.INVALID_VALUE);
+
+            } catch (NumberFormatException e) {
+                System.out.println(Constants.INVALID_VALUE);
+            }
         }
     }
 }

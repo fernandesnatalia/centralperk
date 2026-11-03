@@ -22,8 +22,14 @@ public class Main {
                     String customerName = menu.readCustomerName();
                     Order order = restaurant.createOrder(customerName);
 
-                    addItemsToOrder(order, restaurant, menu);
-                    menu.displayOrder(order);
+                    if (!addItemsToOrder(order, restaurant, menu)) {
+                        restaurant.cancelOrder(order.getNumber());
+                        break;
+                    }
+
+                    double tip = menu.readTipAmount();
+                    restaurant.registerTransaction(order, tip);
+                    menu.displayOrder(order, tip);
                     break;
                 case 2:
                     menu.displayOrders(restaurant.getOrders());
@@ -35,7 +41,7 @@ public class Main {
                     if (foundOrder == null) {
                         menu.displayMessage(Constants.ORDER_NOT_FOUND);
                     } else {
-                        menu.displayOrder(foundOrder);
+                        menu.displayOrder(foundOrder, restaurant.getTipAmount(number));
                     }
                     break;
                 case 4:
@@ -47,12 +53,21 @@ public class Main {
                         break;
                     }
 
+                    if (orderToModify.isCanceled()) {
+                        menu.displayMessage(Constants.ORDER_CANCELED);
+                        break;
+                    }
+
                     int modificationOption = menu.readModificationOption();
 
                     switch (modificationOption) {
                         case 1:
-                            addItemsToOrder(orderToModify, restaurant, menu);
-                            menu.displayOrder(orderToModify);
+                            if (!addItemsToOrder(orderToModify, restaurant, menu)) {
+                                break;
+                            }
+
+                            restaurant.updateTransaction(orderToModify);
+                            menu.displayOrder(orderToModify, restaurant.getTipAmount(orderNumber));
                             break;
                         case 2:
                             if (orderToModify.getItems().isEmpty()) {
@@ -63,12 +78,25 @@ public class Main {
                             menu.displayOrderItems(orderToModify);
                             int itemIndex = menu.readItemIndex(orderToModify);
 
-                            restaurant.removeItemFromOrder(orderToModify, itemIndex);
-                            menu.displayOrder(orderToModify);
+                            if (!restaurant.removeItemFromOrder(orderToModify, itemIndex)) {
+                                menu.displayMessage(Constants.INVALID_OPTION);
+                                break;
+                            }
+
+                            if (orderToModify.isCanceled()) {
+                                menu.displayMessage(Constants.ORDER_CANCELED);
+                                break;
+                            }
+
+                            restaurant.updateTransaction(orderToModify);
+                            menu.displayOrder(orderToModify, restaurant.getTipAmount(orderNumber));
                             break;
                         case 3:
-                            restaurant.cancelOrder(orderNumber);
-                            menu.displayMessage(Constants.ORDER_CANCELED);
+                            if (restaurant.cancelOrder(orderNumber)) {
+                                menu.displayMessage(Constants.ORDER_CANCELED);
+                            } else {
+                                menu.displayMessage(Constants.ORDER_NOT_FOUND);
+                            }
                             break;
                         case 0:
                             break;
@@ -76,8 +104,11 @@ public class Main {
                     break;
                 case 5:
                     menu.displayDailyClosing(
-                            restaurant.calculateDailyRevenue(),
-                            restaurant.getDistinctItemDescriptions()
+                            restaurant.calculateTotalSales(),
+                            restaurant.calculateTotalTips(),
+                            restaurant.calculateTotalCash(),
+                            restaurant.getDistinctItemDescriptions(),
+                            restaurant.getDistinctBaseNames()
                     );
                     isRunning = false;
                     break;
@@ -91,15 +122,20 @@ public class Main {
         }
     }
 
-    private static void addItemsToOrder(
+    private static boolean addItemsToOrder(
             Order order,
             RestaurantFacade restaurant,
             ConsoleMenu menu
     ) {
         boolean isAddingItems;
+        boolean addedAnyItem = false;
 
         do {
             int burgerOption = menu.readBurgerOption();
+
+            if (burgerOption == 0) {
+                break;
+            }
 
             boolean cheddar = false;
             boolean extraBacon = false;
@@ -132,8 +168,11 @@ public class Main {
                 menu.displayMessage(Constants.INVALID_OPTION);
                 isAddingItems = true;
             } else {
-                isAddingItems = menu.askToAddAnotherItem();
+                addedAnyItem = true;
+                isAddingItems = menu.askYesOrNo(Messages.ASK_ADD_ANOTHER);
             }
         } while (isAddingItems);
+
+        return addedAnyItem;
     }
 }
