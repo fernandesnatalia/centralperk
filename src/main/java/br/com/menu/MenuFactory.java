@@ -61,7 +61,7 @@ public final class MenuFactory {
     }
 
     public static boolean supportsLargeSize(int option) {
-        return option == 5 || option == 7;
+        return option == 5;
     }
 
     public static MenuItem createCustomizedItem(
