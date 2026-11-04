@@ -86,7 +86,7 @@ src/
 1. Clone o repositório por linha de comando:
 
    ```bash
-   git clone <URL_DO_REPOSITORIO>
+   git clone <https://github.com/fernandesnatalia/centralperk.git>
    ```
 
 2. Abra o projeto no IntelliJ IDEA.
@@ -190,14 +190,14 @@ Vídeo de apresentação e demonstração do projeto - [Link](<URL_DO_VIDEO>)
 
 ## Histórico de implementação
 
-Descripton - [feat: impl initial project requirements](<URL_DO_COMMIT>)
+Estrutura inicial e gerenciamento de pedidos - [feat: impl initial project requirements](<https://github.com/fernandesnatalia/centralperk/commit/a67b6735c4e72171522606ce9b66dd4fe8db359a>)
 
-Descripton - [feat: impl item customization and decorators](<URL_DO_COMMIT>)
+Personalização com Decorator - [feat: impl item customization and decorators](<https://github.com/fernandesnatalia/centralperk/commit/cb30a99052b2b94b60bcaf8ecc5aebc29a1803ec>)
 
-Descripton - [feat: enhance order management and item customization](<URL_DO_COMMIT>)
+Gerenciamento avançado de pedidos - [feat: enhance order management and item customization](<https://github.com/fernandesnatalia/centralperk/commit/ad1be4dcb2449a9d55cdce974d1f4a33d8a9ad5b>)
 
-Descripton - [feat: add factory, menu customization and financial transactions](<URL_DO_COMMIT>)
+Expansão do sistema — Factory e financeiro - [feat: add factory, menu customization and financial transactions](<https://github.com/fernandesnatalia/centralperk/commit/bdef5c8ffb30392a27947bd07c4efdb374468cbf>)
 
-Descripton - [feat: customize application with Friends theme](<URL_DO_COMMIT>)
+Adaptação temática - [feat: customize application with Friends theme](<https://github.com/fernandesnatalia/centralperk/commit/95459162e57378dfa3f8d901635d0d1d63cd5124>)
 
-Descripton - [test: add unit tests](<URL_DO_COMMIT>)
+Testes automatizados - [test: add unit tests](<https://github.com/fernandesnatalia/centralperk/commit/48df75577c7de246e7aa08419e793e43ec6872c0URL_DO_COMMIT>)
