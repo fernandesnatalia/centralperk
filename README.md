@@ -190,14 +190,14 @@ Vídeo de apresentação e demonstração do projeto - [Link](<URL_DO_VIDEO>)
 
 ## Histórico de implementação
 
-Estrutura inicial e gerenciamento de pedidos - [feat: impl initial project requirements](<https://github.com/fernandesnatalia/centralperk/commit/a67b6735c4e72171522606ce9b66dd4fe8db359a>)
+Nível 1 - Estrutura inicial e gerenciamento de pedidos - [feat: impl initial project requirements](<https://github.com/fernandesnatalia/centralperk/commit/a67b6735c4e72171522606ce9b66dd4fe8db359a>)
 
-Personalização com Decorator - [feat: impl item customization and decorators](<https://github.com/fernandesnatalia/centralperk/commit/cb30a99052b2b94b60bcaf8ecc5aebc29a1803ec>)
+Nível 2 - Personalização com Decorator - [feat: impl item customization and decorators](<https://github.com/fernandesnatalia/centralperk/commit/cb30a99052b2b94b60bcaf8ecc5aebc29a1803ec>)
 
-Gerenciamento avançado de pedidos - [feat: enhance order management and item customization](<https://github.com/fernandesnatalia/centralperk/commit/ad1be4dcb2449a9d55cdce974d1f4a33d8a9ad5b>)
+Nível 3 - Gerenciamento avançado de pedidos - [feat: enhance order management and item customization](<https://github.com/fernandesnatalia/centralperk/commit/ad1be4dcb2449a9d55cdce974d1f4a33d8a9ad5b>)
 
-Expansão do sistema — Factory e financeiro - [feat: add factory, menu customization and financial transactions](<https://github.com/fernandesnatalia/centralperk/commit/bdef5c8ffb30392a27947bd07c4efdb374468cbf>)
+Nível 2 + Bônus - Expansão do sistema - Factory e financeiro - [feat: add factory, menu customization and financial transactions](<https://github.com/fernandesnatalia/centralperk/commit/bdef5c8ffb30392a27947bd07c4efdb374468cbf>)
 
-Adaptação temática - [feat: customize application with Friends theme](<https://github.com/fernandesnatalia/centralperk/commit/95459162e57378dfa3f8d901635d0d1d63cd5124>)
+Adicional - Adaptação temática - [feat: customize application with Friends theme](<https://github.com/fernandesnatalia/centralperk/commit/95459162e57378dfa3f8d901635d0d1d63cd5124>)
 
-Testes automatizados - [test: add unit tests](<https://github.com/fernandesnatalia/centralperk/commit/48df75577c7de246e7aa08419e793e43ec6872c0URL_DO_COMMIT>)
+Bônus - Testes automatizados - [test: add unit tests](<https://github.com/fernandesnatalia/centralperk/commit/48df75577c7de246e7aa08419e793e43ec6872c0URL_DO_COMMIT>)
