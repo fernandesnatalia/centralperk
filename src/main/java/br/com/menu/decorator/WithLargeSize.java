@@ -1,7 +1,6 @@
 package br.com.menu.decorator;
 
 import br.com.menu.MenuItem;
-import br.com.utils.Messages;
 
 public class WithLargeSize implements MenuItem {
 
