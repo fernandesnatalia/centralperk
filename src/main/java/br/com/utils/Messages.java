@@ -26,7 +26,7 @@ public final class Messages {
             "0 - Sair\n";
 
     public static final String MODIFICATION_MENU =
-            "============== MODIFICAR PEDIDO ==============\n" +
+            "============= MODIFICAR PEDIDO ============\n" +
             "1 - Acrescentar item\n" +
             "2 - Remover item\n" +
             "3 - Cancelar pedido\n" +
