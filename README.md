@@ -186,7 +186,7 @@ Os testes cobrem, entre outros cenários:
 
 ## Vídeo de apresentação
 
-Vídeo de apresentação e demonstração do projeto - [Link](<URL_DO_VIDEO>)
+Vídeo de apresentação e demonstração do projeto - [Link](https://drive.google.com/file/d/1kNNIX5G-HXJUJaQZIx870n16JkGIv75t/view?usp=sharing)
 
 ## Histórico de implementação
 
