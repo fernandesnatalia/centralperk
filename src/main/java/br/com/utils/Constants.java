@@ -22,7 +22,7 @@ public final class Constants {
     public static final String INVALID_OPTION = "Opção inválida.\n";
     public static final String ORDER_NOT_FOUND = "Pedido não encontrado.";
     public static final String ORDER_CANCELED = "Pedido cancelado.";
-    public static final String NO_ORDERS = "Nenhum pedido registrado.";
+    public static final String NO_ORDERS = "\nNenhum pedido registrado.";
     public static final String EMPTY_ORDER = "O pedido não possui itens.";
     public static final String ORDER_ITEMS = "Itens do pedido:";
     public static final String RESTAURANT_CLOSED = "Central Perk encerrado.";
